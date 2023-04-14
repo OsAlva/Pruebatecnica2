@@ -10,6 +10,13 @@ import { UsersLists } from './components/UsersList'
 function App () {
   const [users, setUsers] = useState<User[]>([])
   const [showColors, setShowColors] = useState(false)
+  
+
+  const toggleColors = () => {
+    setShowColors(!showColors)
+  }
+
+  console.log(showColors)
 
 
   useEffect(() => {
@@ -27,17 +34,12 @@ function App () {
   return (
     <div className="App">
       <h1>Prueba Tecnica</h1>
-     {/* {
-      JSON.stringify(users)
-     } */}
-     <UsersLists users={users}/>
-
-     {/* {users.map((user) =>{
-      return (
-        <h1 key={user.email}>{user.name.first}</h1>
-      )
-     })} */}
-
+      <header>
+        <button onClick={toggleColors}>Colorear filas</button>
+      </header>
+      <main>
+        <UsersLists showColors={showColors} users={users}/>
+      </main>
     </div>
   )
 }

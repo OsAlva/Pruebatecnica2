@@ -12,7 +12,7 @@ interface Props {
     users: User[]
 }
 
-export function UsersLists ({ users }: Props) {
+export function UsersLists ({ showColors, users }: Props) {
     return (
         <table width='100%'>
             <thead>
@@ -27,9 +27,14 @@ export function UsersLists ({ users }: Props) {
 
             <tbody>
                 {
-                    users.map(user => {
+                    users.map((user, index) => {
+                        // para cambiar el color
+                        const backgroundColor = index % 2 === 0 ? '#333' : '#555'
+                        const color = showColors ? backgroundColor : 'transparent'
+                        console.log(color)
+                        //
                         return (
-                            <tr key={user.id.value}>
+                            <tr key={index} style={{ backgroundColor: color }}>
                                 <td>
                                     <img src={user.picture.thumbnail}/>
                                 </td>
