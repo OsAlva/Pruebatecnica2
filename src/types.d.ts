@@ -1,120 +1,105 @@
-// This file was generated from JSON Schema using quicktype, do not modify it directly.
-// To parse the JSON, add this file to your project and do:
-//
-//   let aPIResults = try? JSONDecoder().decode(APIResults.self, from: jsonData)
+/* eslint-disable no-multi-spaces */
+/* eslint-disable @typescript-eslint/member-delimiter-style */
+/* eslint-disable no-multiple-empty-lines */
+/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable-next-line @typescript-eslint/member-delimiter-style  */
 
-import Foundation
-
-// MARK: - APIResult
-struct APIResult: Codable {
-    let gender: Gender
-    let name: Name
-    let location: Location
-    let email: String
-    let login: Login
-    let dob, registered: Dob
-    let phone, cell: String
-    let id: ID
-    let picture: Picture
-    let nat: String
+export interface APIResults {
+    results: User[];
+    info: Info;
 }
 
-// MARK: - Dob
-struct Dob: Codable {
-    let date: String
-    let age: Int
+export interface Info {
+    seed: string;
+    results: number;
+    page: number;
+    version: string;
 }
 
-enum Gender: String, Codable {
-    case female = "female"
-    case male = "male"
+export interface User {
+    gender: Gender;
+    name: Name;
+    location: Location;
+    email: string;
+    login: Login;
+    dob: Dob;
+    registered: Dob;
+    phone: string;
+    cell: string;
+    id: ID;
+    picture: Picture;
+    nat: string;
 }
 
-// MARK: - ID
-struct ID: Codable {
-    let name: String
-    let value: String?
+export interface Dob {
+    date: Date;
+    age: number;
 }
 
-// MARK: - Location
-struct Location: Codable {
-    let street: Street
-    let city, state, country: String
-    let postcode: Postcode
-    let coordinates: Coordinates
-    let timezone: Timezone
+export enum Gender {
+    Female = 'female',
+    Male = 'male',
 }
 
-// MARK: - Coordinates
-struct Coordinates: Codable {
-    let latitude, longitude: String
+export interface ID {
+    name: string;
+    value: null | string;
 }
 
-enum Postcode: Codable {
-    case integer(Int)
-    case string(String)
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if let x = try? container.decode(Int.self) {
-            self = .integer(x)
-            return
-        }
-        if let x = try? container.decode(String.self) {
-            self = .string(x)
-            return
-        }
-        throw DecodingError.typeMismatch(Postcode.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for Postcode"))
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        switch self {
-        case .integer(let x):
-            try container.encode(x)
-        case .string(let x):
-            try container.encode(x)
-        }
-    }
+export interface Location {
+    street: Street;
+    city: string;
+    state: string;
+    country: string;
+    postcode: number | string;
+    coordinates: Coordinates;
+    timezone: Timezone;
 }
 
-// MARK: - Street
-struct Street: Codable {
-    let number: Int
-    let name: String
+export interface Coordinates {
+    latitude: string;
+    longitude: string;
 }
 
-// MARK: - Timezone
-struct Timezone: Codable {
-    let offset, description: String
+export interface Street {
+    number: number;
+    name: string;
 }
 
-// MARK: - Login
-struct Login: Codable {
-    let uuid, username, password, salt: String
-    let md5, sha1, sha256: String
+export interface Timezone {
+    offset: string;
+    description: string;
 }
 
-// MARK: - Name
-struct Name: Codable {
-    let title: Title
-    let first, last: String
+export interface Login {
+    uuid: string;
+    username: string;
+    password: string;
+    salt: string;
+    md5: string;
+    sha1: string;
+    sha256: string;
 }
 
-enum Title: String, Codable {
-    case madame = "Madame"
-    case miss = "Miss"
-    case monsieur = "Monsieur"
-    case mr = "Mr"
-    case mrs = "Mrs"
-    case ms = "Ms"
+export interface Name {
+    title: Title;
+    first: string;
+    last: string;
 }
 
-// MARK: - Picture
-struct Picture: Codable {
-    let large, medium, thumbnail: String
+export enum Title {
+    MS = 'Ms',
+    Madame = 'Madame',
+    Mademoiselle = 'Mademoiselle',
+    Miss = 'Miss',
+    Monsieur = 'Monsieur',
+    Mr = 'Mr',
+    Mrs = 'Mrs',
 }
 
-typealias APIResults = [APIResult]
-
-
+export interface Picture {
+    large: string;
+    medium: string;
+    thumbnail: string;
+}
