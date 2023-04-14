@@ -36,7 +36,7 @@ function App () {
   }, [])
 
   const sortedUsers = sortByCountry 
-    ? [...users].sort((a, b) => {
+    ? structuredClone(users).sort((a, b) => {
     return a.location.country.localeCompare(b.location.country)
   })
   : users
