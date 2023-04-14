@@ -4,20 +4,21 @@
 import { useState, useEffect } from 'react'
 import {type User } from './types.d'
 import './App.css'
+import { UsersLists } from './components/UsersList'
 
 
 function App () {
-  const [users, setUser] = useState<User[]>([])
+  const [users, setUsers] = useState<User[]>([])
   const [showColors, setShowColors] = useState(false)
 
 
-  useEffect(()=>{
+  useEffect(() => {
     fetch('https://randomuser.me/api?results=100')
     .then(async res => await res.json())
     .then(res => {
-      setUser(res.results)
+      setUsers(res.results)
     })
-    .catch(err =>{
+    .catch(err => {
       console.log(err)
     })
   }, [])
@@ -26,9 +27,10 @@ function App () {
   return (
     <div className="App">
       <h1>Prueba Tecnica</h1>
-     {
+     {/* {
       JSON.stringify(users)
-     }
+     } */}
+     <UsersLists users={users}/>
 
      {/* {users.map((user) =>{
       return (
