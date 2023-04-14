@@ -36,13 +36,13 @@ function App () {
   }, [])
 
   const sortedUsers = sortByCountry 
-    ? structuredClone(users).sort((a, b) => {
+    ? users.toSorted((a, b) => {
     return a.location.country.localeCompare(b.location.country)
   })
   : users
 
 
-  
+
   return (
     <div className="App">
       <h1>Prueba Tecnica</h1>
