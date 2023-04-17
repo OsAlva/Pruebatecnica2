@@ -1,8 +1,8 @@
 /* eslint-disable no-multiple-empty-lines */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/react-in-jsx-scope */
-import { useState, useEffect } from 'react'
-import {type User } from './types.d'
+import { useState, useEffect, useRef } from 'react'
+import { type User } from './types.d'
 import './App.css'
 import { UsersLists } from './components/UsersList'
 
@@ -11,8 +11,9 @@ function App () {
   const [users, setUsers] = useState<User[]>([])
   const [showColors, setShowColors] = useState(false)
   const [sortByCountry, setSortByCountry] = useState(false)
-  const [originalUsers, setOriginalUsers] = useState<User[]>([])
-  
+  // const [originalUsers, setOriginalUsers] = useState<User[]>([])
+  const originalUsers = useRef<User[]>([]) // la forma adecuada de como se debe de hacer el reset
+  // useRef -> para guardar un valor que queremos que se comparta entre renderizados pero que al cambiar, no vuelva a renderizar el componente.
 
   const toggleColors = () => {
     setShowColors(!showColors)
@@ -22,7 +23,7 @@ function App () {
     setSortByCountry(prevState => !prevState) // callback que recupera el valor anterior --> prevState
   }
 
-  console.log(showColors)
+  // console.log(showColors)
 
   const handleDelete = (email: string) => {
     const filteredUsers = users.filter((user) => user.email !== email)
@@ -30,7 +31,7 @@ function App () {
   }
 
   const handleReset = () =>{
-    setUsers(originalUsers)
+    setUsers(originalUsers.current)
   }
 
   useEffect(() => {
@@ -38,7 +39,7 @@ function App () {
     .then(async res => await res.json())
     .then(res => {
       setUsers(res.results)
-      setOriginalUsers(res.results)
+      originalUsers.current = res.results
     })
     .catch(err => {
       console.log(err)
