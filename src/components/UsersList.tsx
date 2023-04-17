@@ -35,7 +35,7 @@ export function UsersLists ({ deleteUser, showColors, users }: Props) {
                         console.log(color)
                         //
                         return (
-                            <tr key={index} style={{ backgroundColor: color }}>
+                            <tr key={user.login.uuid} style={{ backgroundColor: color }}>
                                 <td>
                                     <img src={user.picture.thumbnail}/>
                                 </td>
