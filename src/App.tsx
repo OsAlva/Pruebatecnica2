@@ -1,7 +1,7 @@
 /* eslint-disable no-multiple-empty-lines */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/react-in-jsx-scope */
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { type User } from './types.d'
 import './App.css'
 import { UsersLists } from './components/UsersList'
@@ -49,17 +49,21 @@ function App () {
     })
   }, [])
 
-  const filteredUsers = typeof filterCountry === 'string'
+  const filteredUsers = useMemo(() => {
+    return typeof filterCountry === 'string' && filterCountry.length > 0
     ? users.filter(user => {
       return user.location.country.toLowerCase().includes(filterCountry.toLowerCase())
     })
     : users
+  }, [users, filterCountry])
 
-  const sortedUsers = sortByCountry
-    ? users.toSorted((a, b) => {
-    return a.location.country.localeCompare(b.location.country)
-  })
-  : filteredUsers
+  const sortedUsers = useMemo(() => { // el valor de sortedUser quiero que lo memorices y solo lo renderize cuando cambie filteredUsers o sortByCountry
+    return sortByCountry
+      ? filteredUsers.toSorted(
+        (a, b) => a.location.country.localeCompare(b.location.country)
+      )
+      : filteredUsers
+  }, [filteredUsers, sortByCountry])
 
 
 
