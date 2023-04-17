@@ -5,6 +5,14 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable-next-line @typescript-eslint/member-delimiter-style  */
 
+declare global {
+
+    interface Array<T> {
+        // eslint-disable-next-line @typescript-eslint/method-signature-style
+        toSorted(compareFn?: (a: T, b: T) => number): T[]
+    }
+}
+
 export interface APIResults {
     results: User[];
     info: Info;

@@ -23,6 +23,10 @@ function App () {
 
   console.log(showColors)
 
+  const handleDelete = (index: number) => {
+    const filteredUsers = users.filter((user, userIndex) => userIndex !== index)
+    setUsers(filteredUsers)
+  }
 
   useEffect(() => {
     fetch('https://randomuser.me/api?results=100')
@@ -51,7 +55,7 @@ function App () {
         <button onClick={toggleSortByCountry}>{sortByCountry ? 'No ordenar por país' : 'Ordenar por pais' }</button>
       </header>
       <main>
-        <UsersLists showColors={showColors} users={sortedUsers} />
+        <UsersLists deleteUser={handleDelete} showColors={showColors} users={sortedUsers}/>
       </main>
     </div>
   )
