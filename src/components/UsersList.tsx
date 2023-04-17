@@ -11,6 +11,7 @@ interface Props {
     showColors: boolean
     users: User[]
     deleteUser: (email: string) => void
+    // resetUsers: User[]
 }
 
 export function UsersLists ({ deleteUser, showColors, users }: Props) {
