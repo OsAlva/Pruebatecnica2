@@ -10,7 +10,7 @@ import { type User } from '../types.d'
 interface Props {
     showColors: boolean
     users: User[]
-    deleteUser: (index: number) => void
+    deleteUser: (email: string) => void
 }
 
 export function UsersLists ({ deleteUser, showColors, users }: Props) {
@@ -32,10 +32,10 @@ export function UsersLists ({ deleteUser, showColors, users }: Props) {
                         // para cambiar el color
                         const backgroundColor = index % 2 === 0 ? '#333' : '#555'
                         const color = showColors ? backgroundColor : 'transparent'
-                        console.log(color)
+                        // console.log(color)
                         //
                         return (
-                            <tr key={user.login.uuid} style={{ backgroundColor: color }}>
+                            <tr key={user.email} style={{ backgroundColor: color }}>
                                 <td>
                                     <img src={user.picture.thumbnail}/>
                                 </td>
@@ -44,7 +44,7 @@ export function UsersLists ({ deleteUser, showColors, users }: Props) {
                                 <td>{user.location.country}</td>
                                 <td>
                                     <button onClick={() => {
-                                        deleteUser(index)
+                                        deleteUser(user.email)
                                     }}>
                                         Borrar
                                     </button>

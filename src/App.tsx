@@ -23,8 +23,8 @@ function App () {
 
   console.log(showColors)
 
-  const handleDelete = (index: number) => {
-    const filteredUsers = users.filter((user, userIndex) => userIndex !== index)
+  const handleDelete = (email: string) => {
+    const filteredUsers = users.filter((user) => user.email !== email)
     setUsers(filteredUsers)
   }
 
