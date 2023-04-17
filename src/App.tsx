@@ -11,7 +11,10 @@ function App () {
   const [users, setUsers] = useState<User[]>([])
   const [showColors, setShowColors] = useState(false)
   const [sortByCountry, setSortByCountry] = useState(false)
+  const [filterCountry, setFilterCountry] = useState<string | null>(null)
   // const [originalUsers, setOriginalUsers] = useState<User[]>([])
+
+
   const originalUsers = useRef<User[]>([]) // la forma adecuada de como se debe de hacer el reset
   // useRef -> para guardar un valor que queremos que se comparta entre renderizados pero que al cambiar, no vuelva a renderizar el componente.
 
@@ -46,11 +49,17 @@ function App () {
     })
   }, [])
 
-  const sortedUsers = sortByCountry 
+  const filteredUsers = typeof filterCountry === 'string'
+    ? users.filter(user => {
+      return user.location.country.toLowerCase().includes(filterCountry.toLowerCase())
+    })
+    : users
+
+  const sortedUsers = sortByCountry
     ? users.toSorted((a, b) => {
     return a.location.country.localeCompare(b.location.country)
   })
-  : users
+  : filteredUsers
 
 
 
@@ -61,6 +70,9 @@ function App () {
         <button onClick={toggleColors}>Colorear filas</button>
         <button onClick={toggleSortByCountry}>{sortByCountry ? 'No ordenar por país' : 'Ordenar por pais' }</button>
         <button onClick={handleReset}>Resetear Usuarios</button>
+        <input placeholder='Filtra por pais' onChange={(e) =>{
+          setFilterCountry(e.target.value)
+        }} />
       </header>
       <main>
         <UsersLists deleteUser={handleDelete} showColors={showColors} users={sortedUsers}/>
