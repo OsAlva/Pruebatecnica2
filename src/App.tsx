@@ -65,21 +65,17 @@ function App () {
 
   const sortedUsers = useMemo(() => { // el valor de sortedUser quiero que lo memorices y solo lo renderize cuando cambie filteredUsers o sortByCountry
    if (sorting === SortBy.NONE) return filteredUsers
-   if (sorting === SortBy.COUNTRY){
-    return filteredUsers.toSorted(
-      (a, b) => a.location.country.localeCompare(b.location.country)
-    )
+
+   const compareProperties: Record<string, (user: User) => any> = {
+    [SortBy.COUNTRY]: user => user.location.country,
+    [SortBy.NAME]: user => user.name.first,
+    [SortBy.LAST]: user => user.name.last
    }
-   if (sorting === SortBy.NAME){
-    return filteredUsers.toSorted(
-      (a, b) => a.name.first.localeCompare(b.name.first)
-    )
-   }
-   if (sorting === SortBy.LAST){
-    return filteredUsers.toSorted(
-      (a, b) => a.name.last.localeCompare(b.name.last)
-    )
-   }
+
+   return filteredUsers.toSorted((a, b) => {
+    const extractProperty = compareProperties[sorting]
+    return extractProperty(a).localeCompare(extractProperty(b))
+   })
   }, [filteredUsers, sorting])
 
 
