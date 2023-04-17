@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/space-before-blocks */
 /* eslint-disable no-multiple-empty-lines */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/react-in-jsx-scope */
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { type User } from './types.d'
+import { SortBy, type User } from './types.d'
 import './App.css'
 import { UsersLists } from './components/UsersList'
 
@@ -10,7 +11,7 @@ import { UsersLists } from './components/UsersList'
 function App () {
   const [users, setUsers] = useState<User[]>([])
   const [showColors, setShowColors] = useState(false)
-  const [sortByCountry, setSortByCountry] = useState(false)
+  const [sorting, setSorting] = useState<SortBy>(SortBy.NONE)
   const [filterCountry, setFilterCountry] = useState<string | null>(null)
   // const [originalUsers, setOriginalUsers] = useState<User[]>([])
 
@@ -23,7 +24,8 @@ function App () {
   }
 
   const toggleSortByCountry = () => {
-    setSortByCountry(prevState => !prevState) // callback que recupera el valor anterior --> prevState
+    const newSortingValue = sorting === SortBy.NONE ? SortBy.COUNTRY : SortBy.NONE
+    setSorting(newSortingValue)
   }
 
   // console.log(showColors)
@@ -33,8 +35,12 @@ function App () {
     setUsers(filteredUsers)
   }
 
-  const handleReset = () =>{
+  const handleReset = () => {
     setUsers(originalUsers.current)
+  }
+
+  const handleChangeSort = (sort: SortBy) => {
+    setSorting(sort)
   }
 
   useEffect(() => {
@@ -58,12 +64,23 @@ function App () {
   }, [users, filterCountry])
 
   const sortedUsers = useMemo(() => { // el valor de sortedUser quiero que lo memorices y solo lo renderize cuando cambie filteredUsers o sortByCountry
-    return sortByCountry
-      ? filteredUsers.toSorted(
-        (a, b) => a.location.country.localeCompare(b.location.country)
-      )
-      : filteredUsers
-  }, [filteredUsers, sortByCountry])
+   if (sorting === SortBy.NONE) return filteredUsers
+   if (sorting === SortBy.COUNTRY){
+    return filteredUsers.toSorted(
+      (a, b) => a.location.country.localeCompare(b.location.country)
+    )
+   }
+   if (sorting === SortBy.NAME){
+    return filteredUsers.toSorted(
+      (a, b) => a.name.first.localeCompare(b.name.first)
+    )
+   }
+   if (sorting === SortBy.LAST){
+    return filteredUsers.toSorted(
+      (a, b) => a.name.last.localeCompare(b.name.last)
+    )
+   }
+  }, [filteredUsers, sorting])
 
 
 
@@ -72,14 +89,14 @@ function App () {
       <h1>Prueba Tecnica</h1>
       <header>
         <button onClick={toggleColors}>Colorear filas</button>
-        <button onClick={toggleSortByCountry}>{sortByCountry ? 'No ordenar por país' : 'Ordenar por pais' }</button>
+        <button onClick={toggleSortByCountry}>{sorting === SortBy.COUNTRY ? 'No ordenar por país' : 'Ordenar por pais' }</button>
         <button onClick={handleReset}>Resetear Usuarios</button>
         <input placeholder='Filtra por pais' onChange={(e) =>{
           setFilterCountry(e.target.value)
         }} />
       </header>
       <main>
-        <UsersLists deleteUser={handleDelete} showColors={showColors} users={sortedUsers}/>
+        <UsersLists changeSorting={handleChangeSort} deleteUser={handleDelete} showColors={showColors} users={sortedUsers}/>
       </main>
     </div>
   )

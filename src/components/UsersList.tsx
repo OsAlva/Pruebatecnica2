@@ -5,24 +5,25 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable-next-line @typescript-eslint/member-delimiter-style  */
 
-import { type User } from '../types.d'
+import { SortBy, type User } from '../types.d'
 
 interface Props {
     showColors: boolean
     users: User[]
     deleteUser: (email: string) => void
+    changeSorting: (sort: SortBy) => void
     // resetUsers: User[]
 }
 
-export function UsersLists ({ deleteUser, showColors, users }: Props) {
+export function UsersLists ({ changeSorting, deleteUser, showColors, users }: Props) {
     return (
         <table width='100%'>
             <thead>
                 <tr>
-                <th>Nombre</th>
-                <th>Foto</th>
-                <th>Apellido</th>
-                <th>Pais</th>
+                <th >Foto</th>
+                <th onClick={() => { changeSorting(SortBy.NAME) }}>Nombre</th>
+                <th onClick={() => { changeSorting(SortBy.LAST) }}>Apellido</th>
+                <th onClick={() => { changeSorting(SortBy.COUNTRY) }}>Pais</th>
                 <th>Acciones</th>
                 </tr>
             </thead>
